@@ -1,0 +1,76 @@
+--- a/src/common/ieee802_11_common.c	2020-06-08 16:48:57.000000000 +0200
++++ b/src/common/ieee802_11_common.c	2022-03-29 11:56:08.358876051 +0200
+@@ -814,13 +814,36 @@
+ 		return HOSTAPD_MODE_IEEE80211G;
+ 	}
+ 
+-	if (freq == 2484) {
+-		if (sec_channel || chanwidth)
+-			return NUM_HOSTAPD_MODES;
++	if (freq >= 2192 && freq <= 2402) {
++		if (sec_channel == 1)
++			*op_class = 83;
++		else if (sec_channel == -1)
++			*op_class = 84;
++		else
++			*op_class = 81;
++		*channel = (freq - 2187) / 5 + 212;
++		return HOSTAPD_MODE_IEEE80211G;
++	}
+ 
+-		*op_class = 82; /* channel 14 */
+-		*channel = 14;
++	if (freq == 2407) {
++		if (sec_channel == 1)
++			*op_class = 83;
++		else if (sec_channel == -1)
++			*op_class = 84;
++		else
++			*op_class = 81;
++		*channel = 0;
++		return HOSTAPD_MODE_IEEE80211G;
++	}
+ 
++	if (freq == 2484) {
++		if (sec_channel == 1)
++			*op_class = 83;
++		else if (sec_channel == -1)
++			*op_class = 84;
++		else
++			*op_class = 81;
++		*channel = 14;
+ 		return HOSTAPD_MODE_IEEE80211B;
+ 	}
+ 
+@@ -1734,12 +1757,12 @@
+ 
+ 
+ const struct oper_class_map global_op_class[] = {
+-	{ HOSTAPD_MODE_IEEE80211G, 81, 1, 13, 1, BW20, P2P_SUPP },
+-	{ HOSTAPD_MODE_IEEE80211G, 82, 14, 14, 1, BW20, NO_P2P_SUPP },
++	{ HOSTAPD_MODE_IEEE80211G, 81, 1, 14, 1, BW20, P2P_SUPP },
++	{ HOSTAPD_MODE_IEEE80211G, 82, 14, 14, 1, BW20, P2P_SUPP },
+ 
+ 	/* Do not enable HT40 on 2.4 GHz for P2P use for now */
+-	{ HOSTAPD_MODE_IEEE80211G, 83, 1, 9, 1, BW40PLUS, NO_P2P_SUPP },
+-	{ HOSTAPD_MODE_IEEE80211G, 84, 5, 13, 1, BW40MINUS, NO_P2P_SUPP },
++	{ HOSTAPD_MODE_IEEE80211G, 83, 1, 14, 1, BW40PLUS, P2P_SUPP },
++	{ HOSTAPD_MODE_IEEE80211G, 84, 1, 14, 1, BW40MINUS, P2P_SUPP },
+ 
+ 	{ HOSTAPD_MODE_IEEE80211A, 115, 36, 48, 4, BW20, P2P_SUPP },
+ 	{ HOSTAPD_MODE_IEEE80211A, 116, 36, 44, 8, BW40PLUS, P2P_SUPP },
+--- a/src/ap/hw_features.c	2022-03-25 18:37:51.562827292 +0100
++++ b/src/ap/hw_features.c	2022-03-28 15:54:03.797856980 +0200
+@@ -1020,11 +1020,7 @@
+ 	     iface->conf->ieee80211n || iface->conf->ieee80211ac ||
+ 	     iface->conf->ieee80211ax) &&
+ 	    iface->conf->channel == 14) {
+-		wpa_printf(MSG_INFO, "Disable OFDM/HT/VHT/HE on channel 14");
+-		iface->conf->hw_mode = HOSTAPD_MODE_IEEE80211B;
+-		iface->conf->ieee80211n = 0;
+-		iface->conf->ieee80211ac = 0;
+-		iface->conf->ieee80211ax = 0;
++		iface->conf->hw_mode = HOSTAPD_MODE_IEEE80211G;
+ 	}
+ 
+ 	iface->current_mode = NULL;
