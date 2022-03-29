@@ -5,7 +5,7 @@
  				var band;
  
 -				if (data[1][i].mhz >= 2412 && data[1][i].mhz <= 2484)
-+				if (data[1][i].mhz >= 21 && data[1][i].mhz <= 2484)
++				if (data[1][i].mhz >= 2192 && data[1][i].mhz <= 2484)
  					band = '2g';
  				else if (data[1][i].mhz >= 5160 && data[1][i].mhz <= 5885)
  					band = '5g';
