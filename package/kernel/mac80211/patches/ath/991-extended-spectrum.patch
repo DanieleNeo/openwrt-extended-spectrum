@@ -71,18 +71,6 @@
  	request_wiphy = wiphy_idx_to_wiphy(country_ie_request->wiphy_idx);
  	if (!request_wiphy)
  		return -ENODEV;
-@@ -3931,11 +3903,6 @@
- 		 "wiphy should have REGULATORY_WIPHY_SELF_MANAGED\n"))
- 		return -EPERM;
- 
--	if (WARN(!is_valid_rd(rd), "Invalid regulatory domain detected\n")) {
--		print_regdomain_info(rd);
--		return -EINVAL;
--	}
--
- 	regd = reg_copy_regd(rd);
- 	if (IS_ERR(regd))
- 		return PTR_ERR(regd);
 --- a/net/wireless/util.c	2021-12-14 22:51:06.767876400 +0100
 +++ b/net/wireless/util.c	2022-03-28 16:11:08.405153097 +0200
 @@ -80,6 +80,7 @@
