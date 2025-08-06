@@ -74,9 +74,9 @@
 --- a/net/wireless/util.c	2021-12-14 22:51:06.767876400 +0100
 +++ b/net/wireless/util.c	2022-03-28 16:11:08.405153097 +0200
 @@ -80,6 +80,7 @@
- 		return 0; /* not supported */
  	switch (band) {
  	case NL80211_BAND_2GHZ:
+ 	case NL80211_BAND_LC:
 +		chan = (int)(char)chan;
  		if (chan == 14)
  			return MHZ_TO_KHZ(2484);

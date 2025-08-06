@@ -1,9 +1,10 @@
 --- a/db.txt	2022-03-25 18:35:19.363692382 +0100
 +++ b/db.txt	2022-03-28 15:48:44.988098372 +0200
 @@ -10,19 +10,8 @@
- 
- # This is the world regulatory domain
  country 00:
+ 	# There is no global intersection for 802.11ah, so just mark the entire
+ 	# possible band as NO-IR
+	(755 - 928 @ 2), (20), NO-IR
 -	(2402 - 2472 @ 40), (20)
 -	# Channel 12 - 13.
 -	(2457 - 2482 @ 20), (20), NO-IR, AUTO-BW
@@ -19,6 +20,5 @@
 -	(5735 - 5835 @ 80), (20), NO-IR
 +	(2000 - 3000 @ 40), (40)
 +	(4000 - 7000 @ 80), (40)
- 	# IEEE 802.11ad (60GHz), channels 1..3
- 	(57240 - 63720 @ 2160), (0)
- 
+	# IEEE 802.11ad (60GHz), channels 1..3
+	(57240 - 63720 @ 2160), (0)
